@@ -98,12 +98,13 @@ class BandAPI:
 
     def snapshot(
         self,
-        before: str = None,
         after: str = None,
+        before: str = None,
         limit: int = float("inf"),
         access_token: str = None,
         band_key: str = None,
-        specific: bool = False,
+        get_comments: bool = False,
+        get_specific: bool = False,
     ):
         """
         parameters:
@@ -123,24 +124,26 @@ class BandAPI:
         ):
             for post in posts["result_data"]["items"]:
 
-                if specific:
+                if get_specific:
                     post = self.get_specific_post(
                         post_key=post["post_key"],
                         access_token=access_token or self.access_token,
                         band_key=band_key or self.band_key,
                     )["result_data"]["post"]
 
+                if get_comments:
+                    temp = []
+                    for comments in generator(
+                        self.get_comments,
+                        post_key=post["post_key"],
+                        access_token=access_token or self.access_token,
+                        band_key=band_key or self.band_key,
+                    ):
+                        temp.extend(comments["result_data"]["items"])
+                    post["comments"] = temp
+
                 count += 1
 
-                temp = []
-                for comments in generator(
-                    self.get_comments,
-                    post_key=post["post_key"],
-                    access_token=access_token or self.access_token,
-                    band_key=band_key or self.band_key,
-                ):
-                    temp.extend(comments["result_data"]["items"])
-                post["comments"] = temp
                 yield post
 
                 if (count >= limit) or (post["post_key"] == before):
