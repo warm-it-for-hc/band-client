@@ -37,8 +37,8 @@ Create a `.env` file in the project root (or copy `example.env`):
 ```
 BAND_ACCESS_TOKEN=your_band_access_token
 BAND_KEY=your_band_key
-BAND_CLIENT_ID=your_client_id
-BAND_CLIENT_SECRET=your_client_secret
+BAND_CLIENT_ID=your_client_id (not used)
+BAND_CLIENT_SECRET=your_client_secret (not_used)
 ```
 
 - You can obtain these credentials from the [BAND Developer Portal](https://developers.band.us/).
@@ -50,9 +50,10 @@ BAND_CLIENT_SECRET=your_client_secret
 The CLI is powered by [fire](https://github.com/google/python-fire). Example usage:
 
 ```bash
-python main.py band get_bands
-python main.py band get_posts --band_key=YOUR_BAND_KEY
-python main.py band get_comments --post_key=POST_KEY
+python client band get_bands
+python client band get_posts --band_key=YOUR_BAND_KEY
+python client band get_comments --post_key=POST_KEY
+python client band snapshot
 ```
 
 You can pass additional parameters as keyword arguments.

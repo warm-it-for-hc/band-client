@@ -141,6 +141,7 @@ class BandAPI:
                 ):
                     temp.extend(comments["result_data"]["items"])
                 post["comments"] = temp
+                yield post
 
                 if (count >= limit) or (post["post_key"] == before):
                     stop = True
